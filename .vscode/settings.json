@@ -1,0 +1,9 @@
+{
+  "breadcrumbs.showKeys": true,
+  "workbench.colorCustomizations": {
+    "titleBar.activeForeground": "#000",
+    "titleBar.inactiveForeground": "#000000cc",
+    "titleBar.activeBackground": "#ffc600",
+    "titleBar.inactiveBackground": "#ffc600cc"
+  }
+}
