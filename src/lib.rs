@@ -1,10 +1,9 @@
+use serde_json::{Map, Value};
 use std::{
     error::Error,
     io::Read,
     path::{Path, PathBuf},
 };
-
-use serde_json::{Map, Value};
 
 pub fn run() -> Result<(), Box<dyn Error>> {
     let project_dir = get_project_dir_path();
@@ -12,7 +11,9 @@ pub fn run() -> Result<(), Box<dyn Error>> {
         Ok(project_dir) => {
             println!("project_dir: {}", project_dir.display());
 
-            // Read in the contents of the .vscode/settings.json file. If the file doesn't exist, create empty json object.
+            // Read in the contents of the .vscode/settings.json file.
+            // If the folder doesn't exist, create it.
+            // If the file doesn't exist, create empty json object.
             let mut settings_json = String::new();
             let settings_file_path = project_dir.join(".vscode/settings.json");
             if settings_file_path.exists() {
@@ -25,20 +26,26 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             println!("settings_json: {}", settings_json);
 
             //  Parse the settings_json string into a json object with serde_json
-            let mut settings_json_object: serde_json::Value =
-                serde_json::from_str(&settings_json).unwrap();
+            let mut settings_json_object: Map<String, Value> =
+                serde_json::from_str(&settings_json).expect("Invalid json");
+            // Handle the error if the json is invalid
 
-            // Remove the "workbench.colorCustomizations" key if it already exists.
+            let new_colors = create_new_color_customizations_object();
+
+            // Act differently depending on if the key allready exists or not
             match settings_json_object.get("workbench.colorCustomizations") {
                 Some(_) => {
-                    settings_json_object["workbench.colorCustomizations"].take();
+                    // settings_json_object["workbench.colorCustomizations"].take();
+                    settings_json_object["workbench.colorCustomizations"] =
+                        serde_json::json!(&new_colors);
                 }
-                None => (),
+                None => {
+                    settings_json_object.insert(
+                        "workbench.colorCustomizations".to_string(),
+                        serde_json::json!(&new_colors),
+                    );
+                }
             };
-
-            // Add a new "workbench.colorCustomizations" key to the json object
-            let new_colors = create_new_color_customizations_object();
-            settings_json_object["workbench.colorCustomizations"] = serde_json::json!(&new_colors);
 
             // Make sure the directory .vscode exists
             let vscode_dir = project_dir.join(".vscode");
@@ -62,10 +69,12 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 }
 
 fn create_new_color_customizations_object() -> Map<String, Value> {
+    let new_active_background = serde_json::json!("#00ffff");
+
     let mut new_colors = Map::new();
     new_colors.insert(
         "titleBar.activeBackground".to_string(),
-        serde_json::json!("#00ffff"),
+        serde_json::json!(new_active_background),
     );
     new_colors.insert(
         "titleBar.activeForeground".to_string(),
