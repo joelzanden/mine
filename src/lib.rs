@@ -1,3 +1,6 @@
+mod colors;
+
+use colors::COLOR_NAMES;
 use serde_json::{Map, Value};
 use std::{
     error::Error,
@@ -55,7 +58,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 
             // Write the json object back to the .vscode/settings.json file
             std::fs::write(
-                settings_file_path.clone(),
+                settings_file_path,
                 serde_json::to_string_pretty(&settings_json_object).unwrap(),
             )
             .unwrap();
@@ -69,6 +72,11 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 }
 
 fn create_new_color_customizations_object() -> Map<String, Value> {
+    let number_of_elements_in_array = COLOR_NAMES.len();
+    let random_index = rand::random::<usize>() % number_of_elements_in_array;
+    let base_color_name = COLOR_NAMES[random_index];
+    println!("base_color_name: {:?}", base_color_name);
+
     let new_active_background = serde_json::json!("#00ffff");
 
     let mut new_colors = Map::new();
@@ -110,7 +118,7 @@ pub fn get_project_dir_path() -> Result<PathBuf, &'static str> {
     Err("No project directory found")
 }
 
-pub fn we_are_in_a_project_dir(path: &PathBuf) -> bool {
+pub fn we_are_in_a_project_dir(path: &Path) -> bool {
     let cargo_toml_path = path.join("Cargo.toml");
     let package_json_path = path.join("package.json");
 
@@ -118,9 +126,5 @@ pub fn we_are_in_a_project_dir(path: &PathBuf) -> bool {
     // That might include the user settings
     // let vscode_settings_path = path.join(".vscode/settings.json");
 
-    if cargo_toml_path.exists() || package_json_path.exists() {
-        true
-    } else {
-        false
-    }
+    cargo_toml_path.exists() || package_json_path.exists()
 }
