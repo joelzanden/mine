@@ -1,6 +1,5 @@
 mod colors;
 
-use colors::COLOR_NAMES;
 use serde_json::{Map, Value};
 use std::{
     error::Error,
@@ -72,10 +71,9 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 }
 
 fn create_new_color_customizations_object() -> Map<String, Value> {
-    let number_of_elements_in_array = COLOR_NAMES.len();
-    let random_index = rand::random::<usize>() % number_of_elements_in_array;
-    let base_color_name = COLOR_NAMES[random_index];
-    println!("base_color_name: {:?}", base_color_name);
+    let color = colors::get_random_color();
+
+    dbg!(&color);
 
     let new_active_background = serde_json::json!("#00ffff");
 
