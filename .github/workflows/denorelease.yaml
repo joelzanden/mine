@@ -1,0 +1,86 @@
+name: Run code checks, compile for mac and Linux, and then upload to release and bump version
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - run: deno fmt --check
+      - run: deno lint
+
+  build:
+    needs: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, macos-12]
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Calculate next version, but don't bump
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          dry_run: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compile
+        run: deno compile --allow-read=downloads --allow-write=downloads --allow-net=rest-1.limpan.live,rest-2.limpan.live --output=postgres-downloader-${{ matrix.os }}-${{ steps.tag_version.outputs.new_tag }} ./src/main.ts
+
+      - name: Upload artifact for job
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: postgres-downloader-${{ matrix.os }}-${{ steps.tag_version.outputs.new_tag }}
+          path: postgres-downloader-${{ matrix.os }}-${{ steps.tag_version.outputs.new_tag }}
+
+  release:
+    needs: [test, build]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: postgres-downloader-ubuntu-22.04-${{ steps.tag_version.outputs.new_tag }}
+          path: artifacts
+      - uses: actions/download-artifact@v3
+        with:
+          name: postgres-downloader-macos-12-${{ steps.tag_version.outputs.new_tag }}
+          path: artifacts
+
+      - name: Display structure of cwd
+        run: ls -R
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          fail_on_unmatched_files: true
+          files: artifacts/*
