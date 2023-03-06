@@ -13,15 +13,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Install Cargo Edit
+        run: cargo install cargo-edit
+
       - name: Cache Cargo dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-
+
       - name: Cache build artifacts
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./target/release
           key: ${{ runner.os }}-target-${{ hashFiles('**/Cargo.lock') }}
@@ -30,10 +35,13 @@ jobs:
 
       - name: Build
         run: cargo build --verbose --release
+
       - name: Bump version
         run: |
-          cargo install cargo-bump
-          cargo bump patch --git-commit
+          cargo set-version --bump patch
+          git add Cargo.toml
+          git commit -m "Bump version"
+
       - name: Create release
         uses: actions/create-release@latest
         env:
