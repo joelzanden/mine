@@ -17,7 +17,7 @@ jobs:
         run: cargo build --verbose --release
       - name: Bump version
         run: |
-          cargo version --allow-no-vcs --manifest-path Cargo.toml --patch
+          cargo version --manifest-path Cargo.toml --patch
           git add Cargo.toml
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
@@ -33,3 +33,13 @@ jobs:
             Release for version $(jq -r '.package.version' Cargo.toml)
           draft: false
           prerelease: false
+
+      - name: Upload binary
+        uses: actions/upload-release-asset@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/release/mine.exe
+          asset_name: mine.exe
+          asset_content_type: application/octet-stream
