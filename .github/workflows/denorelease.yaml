@@ -4,11 +4,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.repository }}-${{ github.ref }}
   cancel-in-progress: true
 
-on:
-  push:
-    branches:
-      - main
-      - develop
+  # on manual trigger
+on: workflow_dispatch
 
 jobs:
   test:
