@@ -2,17 +2,34 @@ name: Rust
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --verbose --release
+      - uses: actions/checkout@v3
+      - name: Build
+        run: cargo build --verbose --release
+      - name: Bump version
+        run: |
+          cargo version --allow-no-vcs --manifest-path Cargo.toml --patch
+          git add Cargo.toml
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git commit -m "Bump version"
+      - name: Create release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v$(jq -r '.package.version' Cargo.toml)
+          release_name: Release $(jq -r '.package.version' Cargo.toml)
+          body: |
+            Release for version $(jq -r '.package.version' Cargo.toml)
+          draft: false
+          prerelease: false
