@@ -15,8 +15,16 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
-        binary_name: ["mine", "mine", "mine"]
-        binary_ext: [".exe", "", ""]
+        include:
+          - os: windows-latest
+            binary_name: "mine.exe"
+            binary_ext: ".exe"
+          - os: macos-latest
+            binary_name: "mine"
+            binary_ext: ""
+          - os: ubuntu-latest
+            binary_name: "mine"
+            binary_ext: ""
 
     steps:
       - uses: actions/checkout@v3
