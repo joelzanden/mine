@@ -10,14 +10,22 @@ env:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        binary_name: ["mine", "mine", "mine"]
+        binary_ext: [".exe", "", ""]
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Toolchain info
         run: |
           cargo --version --verbose
           rustc --version
+
       - name: Cache Cargo dependencies
         uses: actions/cache@v3
         with:
@@ -42,4 +50,4 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ./target/release/mine.exe
+            ./target/release/${{ matrix.binary_name }}${{ matrix.binary_ext }}:${{ matrix.binary_name }}-${{ env.VERSION }}-${{ matrix.os }}-${{ runner.arch }}.tar.gz
