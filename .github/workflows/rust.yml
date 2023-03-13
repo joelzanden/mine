@@ -17,11 +17,14 @@ jobs:
         os: [windows-latest, macos-latest, ubuntu-latest]
         include:
           - os: windows-latest
-            binary_name: "mine.exe"
+            binary_name: "mine-${{ github.ref_name }}-windows-x86.exe"
+            binary_ext: ".exe"
           - os: macos-latest
-            binary_name: "mine"
+            binary_name: "mine-${{ github.ref_name }}-macos-x86"
+            binary_ext: ""
           - os: ubuntu-latest
-            binary_name: "mine"
+            binary_name: "mine-${{ github.ref_name }}-linux-x86"
+            binary_ext: ""
 
     steps:
       - uses: actions/checkout@v3
@@ -50,9 +53,13 @@ jobs:
       - name: Build
         run: cargo build --verbose --release
 
+      - name: Rename output file
+        run: mv "./target/release/mine${{ matrix.binary_ext }}" "./target/release/${{ matrix.binary_name }}"
+
+
       - name: Create release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ./target/release/${{ matrix.binary_name }}:${{ matrix.binary_name }}-${{ env.VERSION }}-${{ matrix.os }}-${{ runner.arch }}.tar.gz
+            ./target/release/${{ matrix.binary_name }}
