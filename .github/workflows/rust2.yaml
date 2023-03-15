@@ -1,0 +1,60 @@
+name: Build and Release
+
+on:
+  release:
+    types: [published]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-10.15, macos-11, macos-12]
+        target: [x86_64-apple-darwin, aarch64-apple-darwin]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Toolchain info
+        run: |
+          cargo --version --verbose
+          rustc --version
+
+      - name: Setup linker for ARM64
+        if: matrix.target == 'aarch64-apple-darwin'
+        run: |
+          echo 'CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER=clang -target arm64-apple-macos11' >> $GITHUB_ENV
+
+      - name: Build
+        run: cargo build --verbose --release --target ${{ matrix.target }}
+
+      - name: Package
+        run: |
+          mkdir -p bin
+          cp target/${{ matrix.target }}/release/mine bin/
+          os_name=$(echo ${{ matrix.os }} | sed 's/macos-//;s/10.15/catalina/;s/11/big_sur/;s/12/monterey/')
+          arch=$(echo ${{ matrix.target }} | cut -d- -f1)
+          tar czf mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.bottle.tar.gz -C bin mine
+
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.bottle.tar.gz
+          path: mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.bottle.tar.gz
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+
+      - name: Attach binaries to the release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "artifacts/*.tar.gz"
