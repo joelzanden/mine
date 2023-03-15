@@ -26,6 +26,9 @@ jobs:
           profile: minimal
           override: true
 
+      - name: Add target
+        run: rustup target add ${{ matrix.target }}
+
       - name: Cache Cargo dependencies
         uses: actions/cache@v3
         with:
