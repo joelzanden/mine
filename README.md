@@ -9,6 +9,30 @@
 - Enhances visual distinction between projects
 - Currently supports Visual Studio Code, with more editors planned for future updates
 
+## Installation
+
+### Precompiled Binaries
+
+You can download precompiled binaries for your operating system from the [releases page](https://github.com/joelzanden/mine/releases).
+
+### Build from Source
+
+If you have Rust and Cargo installed, you can build Mine from source using the following command:
+
+```bash
+cargo build --release
+```
+
+## Usage
+
+After installing Mine and made sure it's in your system's PATH, you can use it by running the following command in your project directory:
+
+```bash
+mine
+```
+
+This command will locate the project root, update the settings file with a randomly selected CSS named color, and apply the color to the top portion of the editor window.
+
 ## Supported Project Files and Folders
 
 This utility can automatically detect and locate the root of your programming project hierarchy by searching for specific project files and folders. The table below lists the files and folders that are currently supported, categorized by the programming language or framework.
@@ -50,67 +74,6 @@ This utility can automatically detect and locate the root of your programming pr
 |        Swift         |                                                                      Package.swift                                                                      |
 |      TypeScript      |                                                                      tsconfig.json                                                                      |
 |         Vue          |                                                                      vue.config.js                                                                      |
-
-## Installation
-
-### Cargo
-
-If you have Rust and Cargo installed, you can install Mine using the following command:
-
-```bash
-cargo install mine
-```
-
-### Homebrew (macOS)
-
-To install Mine using Homebrew, run the following commands:
-
-```bash
-brew tap yourusername/your_repo
-brew install mine
-```
-
-### Scoop (Windows)
-
-To install Mine using Scoop, run the following command:
-
-```bash
-scoop bucket add your_bucket_name https://github.com/yourusername/your_bucket_repo
-scoop install mine
-```
-
-### Chocolatey (Windows)
-
-To install Mine using Chocolatey, run the following command:
-
-```bash
-choco install mine
-```
-
-### Debian/Ubuntu (Linux)
-
-To install Mine on Debian/Ubuntu, you can use the apt package manager. First, add the repository and update the package list:
-
-```bash
-sudo add-apt-repository ppa:yourusername/your_repo
-sudo apt update
-```
-
-Next, install Mine with the following command:
-
-```bash
-sudo apt install mine
-```
-
-## Usage
-
-After installing Mine, you can use it by running the following command in your project directory:
-
-```bash
-mine
-```
-
-This command will locate the project root, update the settings file with a randomly selected CSS named color, and apply the color to the top portion of the editor window.
 
 ## Contributing
 
