@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-10.15, macos-11, macos-12]
-        target: [x86_64-apple-darwin, aarch64-apple-darwin]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,40 +22,34 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: ${{ matrix.target }}
           profile: minimal
           override: true
 
       - name: Add target
-        run: rustup target add ${{ matrix.target }}
+        run: rustup update
 
       - name: Cache Cargo dependencies
         uses: actions/cache@v3
         with:
           path: ~/.cargo
-          key: ${{ runner.os }}-${{ matrix.target }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.target }}-cargo-
+            ${{ runner.os }}-cargo-
 
       - name: Toolchain info
         run: |
           cargo --version --verbose
           rustc --version
 
-      - name: Setup linker for ARM64
-        if: matrix.target == 'aarch64-apple-darwin'
-        run: |
-          echo 'CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER=clang -target arm64-apple-macos11' >> $GITHUB_ENV
-
       - name: Build
-        run: cargo build --verbose --release --target ${{ matrix.target }}
+        run: cargo build --verbose --release
 
       - name: Package
         run: |
           mkdir -p bin
-          cp target/${{ matrix.target }}/release/mine bin/
+          cp target/release/mine bin/
           os_name=$(echo ${{ matrix.os }} | sed 's/macos-//;s/10.15/catalina/;s/11/big_sur/;s/12/monterey/')
-          arch=$(echo ${{ matrix.target }} | cut -d- -f1)
+          arch=$(echo "x86_64-apple-darwin" | cut -d- -f1)
           tar czf mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.bottle.tar.gz -C bin mine
 
       - name: Upload
@@ -73,7 +67,17 @@ jobs:
         with:
           path: artifacts
 
+      - name: Calculate checksums and generate table
+        run: |
+          table="| Filename | SHA256 Checksum |\n|----------|-----------------|\n"
+          for file in artifacts/*.tar.gz; do
+            checksum=$(sha256sum "$file" | awk '{print $1}')
+            table+="| $(basename "$file") | $checksum |\n"
+          done
+          echo "table=$table" >> $GITHUB_ENV
+
       - name: Attach binaries to the release
         uses: softprops/action-gh-release@v1
         with:
           files: "artifacts/*.tar.gz"
+          body: ${{ env.table }}
