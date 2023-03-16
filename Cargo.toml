@@ -1,6 +1,6 @@
 [package]
 name = "mine"
-version = "0.1.12"
+version = "0.1.13"
 authors = ["Joel Zandén <joel@zanden.xyz>"]
 description = "A CLI that adjusts window colors for easy project distinction, randomly selecting a color from the CSS named colors. The app aims to improve your workspace organization and enhance your coding experience by visually differentiating projects with unique colors."
 edition = "2021"
