@@ -9,6 +9,70 @@
 - Enhances visual distinction between projects
 - Currently supports Visual Studio Code, with more editors planned for future updates
 
+## Project roots
+
+| Language / Framework |      File(s)       |
+| :------------------: | :----------------: |
+|       General        |      .vscode       |
+|                      |        .git        |
+|                      |      .github       |
+|                      |   .gitlab-ci.yml   |
+|                      |   .editorconfig    |
+|                      |     .gitignore     |
+|                      |     README.md      |
+|                      |      LICENSE       |
+|                      |     Dockerfile     |
+|                      |   .dockerignore    |
+|                      |    Vagrantfile     |
+|                      |    .travis.yml     |
+|                      |    Jenkinsfile     |
+|         Rust         |     Cargo.toml     |
+|        Python        |   pyproject.toml   |
+|                      |  requirements.txt  |
+|                      |      setup.py      |
+|                      |      Pipfile       |
+|         Node         |    package.json    |
+|                      |     yarn.lock      |
+|                      |     lerna.json     |
+|         Java         |      pom.xml       |
+|                      |    build.gradle    |
+|          C#          |    project.json    |
+|                      |      .csproj       |
+|                      |      .fsproj       |
+|                      |        .sln        |
+|         C++          |   CMakeLists.txt   |
+|                      |      Makefile      |
+|          Go          |       go.mod       |
+|         PHP          |   composer.json    |
+|         Ruby         |      Gemfile       |
+|                      |      .gemspec      |
+|                      |      Rakefile      |
+|        Swift         |   Package.swift    |
+|       Haskell        |     stack.yaml     |
+|         Lua          |        lua         |
+|         Perl         |      cpanfile      |
+|        Scala         |     build.sbt      |
+|        Elixir        |      mix.exs       |
+|         Elm          |      elm.json      |
+|        Erlang        |    rebar.config    |
+|         Dart         |    pubspec.yaml    |
+|        Julia         |    Project.toml    |
+|       Crystal        |     shard.yml      |
+|         Nim          |      nim.cfg       |
+|        OCaml         |        dune        |
+|          R           |    DESCRIPTION     |
+|          F#          | paket.dependencies |
+|       Clojure        |    project.clj     |
+|        Groovy        |    build.gradle    |
+|      PowerShell      |   psakefile.ps1    |
+|      TypeScript      |   tsconfig.json    |
+|         Vue          |   vue.config.js    |
+|       Angular        |    angular.json    |
+|        Svelte        |  svelte.config.js  |
+|        Ember         | ember-cli-build.js |
+|        Meteor        |       meteor       |
+|       ASP.NET        |    project.json    |
+
 ## Installation
 
 ### Cargo
@@ -46,8 +110,8 @@ choco install mine
 ```
 
 ### Debian/Ubuntu (Linux)
-To install Mine on Debian/Ubuntu, you can use the apt package manager. First, add the repository and update the package list:
 
+To install Mine on Debian/Ubuntu, you can use the apt package manager. First, add the repository and update the package list:
 
 ```bash
 sudo add-apt-repository ppa:yourusername/your_repo
@@ -73,4 +137,3 @@ This command will locate the project root, update the settings file with a rando
 ## Contributing
 
 If you're interested in contributing to Mine, please feel free to open an issue or submit a pull request on the GitHub repository.
-
