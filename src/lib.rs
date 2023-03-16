@@ -1,14 +1,11 @@
 mod colors;
+mod project_root_detection;
 
 use serde_json::{Map, Value};
-use std::{
-    error::Error,
-    io::Read,
-    path::{Path, PathBuf},
-};
+use std::{ error::Error, io::Read};
 
 pub fn run() -> Result<(), Box<dyn Error>> {
-    match get_project_dir_path() {
+    match project_root_detection::get_project_dir_path() {
         Ok(project_dir) => {
             let mut settings_json = String::new();
             let settings_file_path = project_dir.join(".vscode/settings.json");
@@ -106,40 +103,4 @@ fn create_new_color_customizations_object() -> Map<String, Value> {
     println!("{}", new_color.0);
 
     new_colors
-}
-
-pub fn get_project_dir_path() -> Result<PathBuf, &'static str> {
-    let mut path = std::env::current_dir().unwrap();
-    let home = dirs::home_dir().unwrap();
-
-    while path != Path::new("/") && path != home {
-        match we_are_in_a_project_dir(&path) {
-            true => {
-                return Ok(path);
-            }
-            false => {
-                path.pop();
-            }
-        }
-    }
-
-    Err("Could not find a project directory. Are you in a project directory?")
-}
-
-pub fn we_are_in_a_project_dir(path: &Path) -> bool {
-    let cargo_toml_path = path.join("Cargo.toml");
-    let package_json_path = path.join("package.json");
-    let git_dir_path = path.join(".git");
-    let jsconfig_path = path.join("jsconfig.json");
-    let tsconfig_path = path.join("tsconfig.json");
-
-    // Excluding .vscode/settings.json for now because I don't want to land in the home folder
-    // That might include the user settings
-    // let vscode_settings_path = path.join(".vscode/settings.json");
-
-    cargo_toml_path.exists()
-        || package_json_path.exists()
-        || git_dir_path.exists()
-        || jsconfig_path.exists()
-        || tsconfig_path.exists()
 }
