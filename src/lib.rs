@@ -8,14 +8,8 @@ use std::{
 };
 
 pub fn run() -> Result<(), Box<dyn Error>> {
-    let project_dir = get_project_dir_path();
-    match project_dir {
+    match get_project_dir_path() {
         Ok(project_dir) => {
-            println!("project_dir: {}", project_dir.display());
-
-            // Read in the contents of the .vscode/settings.json file.
-            // If the folder doesn't exist, create it.
-            // If the file doesn't exist, create empty json object.
             let mut settings_json = String::new();
             let settings_file_path = project_dir.join(".vscode/settings.json");
             if settings_file_path.exists() {
@@ -25,10 +19,8 @@ pub fn run() -> Result<(), Box<dyn Error>> {
                 settings_json = "{}".to_string();
             }
 
-            //  Parse the settings_json string into a json object with serde_json
             let mut settings_json_object: Map<String, Value> =
-                serde_json::from_str(&settings_json).expect("Invalid json");
-            // Handle the error if the json is invalid
+                serde_json::from_str(&settings_json).expect("Invalid json: settings.json");
 
             let new_colors = create_new_color_customizations_object();
 
@@ -131,16 +123,23 @@ pub fn get_project_dir_path() -> Result<PathBuf, &'static str> {
         }
     }
 
-    Err("No project directory found")
+    Err("Could not find a project directory. Are you in a project directory?")
 }
 
 pub fn we_are_in_a_project_dir(path: &Path) -> bool {
     let cargo_toml_path = path.join("Cargo.toml");
     let package_json_path = path.join("package.json");
+    let git_dir_path = path.join(".git");
+    let jsconfig_path = path.join("jsconfig.json");
+    let tsconfig_path = path.join("tsconfig.json");
 
     // Excluding .vscode/settings.json for now because I don't want to land in the home folder
     // That might include the user settings
     // let vscode_settings_path = path.join(".vscode/settings.json");
 
-    cargo_toml_path.exists() || package_json_path.exists()
+    cargo_toml_path.exists()
+        || package_json_path.exists()
+        || git_dir_path.exists()
+        || jsconfig_path.exists()
+        || tsconfig_path.exists()
 }
