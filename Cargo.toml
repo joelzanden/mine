@@ -2,7 +2,7 @@
 name = "mine"
 version = "0.1.17"
 authors = ["Joel Zandén <joel@zanden.xyz>"]
-description = "A CLI for color-coding project windows, enhancing workspace organization and user experience."
+description = "CLI for color-coding project windows, enhancing workspace organization"
 edition = "2021"
 
 [profile.release]
