@@ -46,17 +46,19 @@ jobs:
 
       - name: Package
         run: |
-          mkdir -p bin
+          mkdir bin
           cp target/release/mine bin/
           os_name=$(echo ${{ matrix.os }} | sed 's/macos-//;s/10.15/catalina/;s/11/big_sur/;s/12/monterey/')
           arch=$(echo "x86_64-apple-darwin" | cut -d- -f1)
-          tar czf mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.bottle.tar.gz -C bin mine
+          binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.bottle.tar.gz
+          echo "BINARY_NAME=$binary_name" >> $GITHUB_ENV
+          tar czf $binary_name -C bin mine
 
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.bottle.tar.gz
-          path: mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.bottle.tar.gz
+          name: ${{ env.BINARY_NAME }}
+          path: ${{ env.BINARY_NAME }}
 
   release:
     runs-on: ubuntu-latest
