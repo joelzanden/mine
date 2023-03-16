@@ -46,11 +46,9 @@ jobs:
         run: |
           mkdir bin
           cp target/release/mine.exe bin/
-          os_name="windows"
-          arch="x86_64"
-          binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}
-          echo "BINARY_NAME=$binary_name.zip" >> $GITHUB_ENV
-          powershell Compress-Archive -Path bin/mine.exe -DestinationPath $binary_name
+          $binary_name = "mine-${{ github.event.release.tag_name }}.windows.x86_64"
+          echo "BINARY_NAME=$binary_name.zip" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          Compress-Archive -Path bin/mine.exe -DestinationPath "$binary_name.zip"
 
       - name: Package (macOS/Linux)
         if: runner.os != 'Windows'
