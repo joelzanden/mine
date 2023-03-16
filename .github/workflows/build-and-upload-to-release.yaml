@@ -41,30 +41,33 @@ jobs:
       - name: Build
         run: cargo build --verbose --release
 
-      - name: Package
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
         run: |
           mkdir bin
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            cp target/release/mine.exe bin/
-            os_name="windows"
+          cp target/release/mine.exe bin/
+          os_name="windows"
+          arch="x86_64"
+          binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}
+          echo "BINARY_NAME=$binary_name.zip" >> $GITHUB_ENV
+          powershell Compress-Archive -Path bin/mine.exe -DestinationPath $binary_name
+
+      - name: Package (macOS/Linux)
+        if: runner.os != 'Windows'
+        run: |
+          mkdir bin
+          cp target/release/mine bin/
+          if [ "${{ runner.os }}" == "Linux" ]; then
+            os_name="linux"
             arch="x86_64"
-            binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}
-            echo "BINARY_NAME=$binary_name.zip" >> $GITHUB_ENV
-            powershell Compress-Archive -Path bin/mine.exe -DestinationPath $binary_name
           else
-            cp target/release/mine bin/
-            if [ "${{ runner.os }}" == "Linux" ]; then
-              os_name="linux"
-              arch="x86_64"
-            else
-              os_name=$(echo ${{ matrix.os }} | sed 's/macos-//;s/10.15/catalina/;s/11/big_sur/;s/12/monterey/')
-              arch=$(echo "x86_64-apple-darwin" | cut -d- -f1)
-            fi
-            ext="bottle.tar.gz"
-            binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.${ext}
-            echo "BINARY_NAME=$binary_name" >> $GITHUB_ENV
-            tar czf $binary_name -C bin mine
+            os_name=$(echo ${{ matrix.os }} | sed 's/macos-//;s/10.15/catalina/;s/11/big_sur/;s/12/monterey/')
+            arch=$(echo "x86_64-apple-darwin" | cut -d- -f1)
           fi
+          ext="bottle.tar.gz"
+          binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.${ext}
+          echo "BINARY_NAME=$binary_name" >> $GITHUB_ENV
+          tar czf $binary_name -C bin mine
 
       - name: Upload
         uses: actions/upload-artifact@v3
@@ -86,7 +89,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           table="| Filename | SHA256 Checksum |\n|----------|-----------------|"
-          for file in artifacts/*.tar.gz/*.tar.gz; do
+          for file in artifacts/*/*.{tar.gz,zip}; do
             checksum=$(sha256sum "$file" | awk '{print $1}')
             table+="\n| $(basename "$file") | $checksum |"
           done
@@ -103,7 +106,7 @@ jobs:
             | jq -r '.upload_url')
           upload_url="${upload_url%\{?name,label\}}"
 
-          for file in artifacts/*.tar.gz/*.tar.gz; do
+          for file in artifacts/*/*.{tar.gz,zip}; do
             curl -s -H "Authorization: token $GITHUB_TOKEN" \
               -H "Content-Type: application/octet-stream" \
               --data-binary "@$file" \
