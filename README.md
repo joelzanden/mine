@@ -11,6 +11,14 @@
 
 ## Installation
 
+### Homebrew
+
+If you're using Homebrew, you can install Mine using the following command:
+
+```bash
+brew install joelzanden/tap/mine
+```
+
 ### Precompiled Binaries
 
 You can download precompiled binaries for your operating system from the [releases page](https://github.com/joelzanden/mine/releases).
