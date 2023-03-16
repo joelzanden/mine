@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and attach binaries to the release
 
 on:
   release:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-10.15, macos-11, macos-12]
+        os: [macos-10.15, macos-11, macos-12, windows-latest, ubuntu-latest]
 
     steps:
       - name: Checkout
@@ -24,9 +24,6 @@ jobs:
           toolchain: stable
           profile: minimal
           override: true
-
-      - name: Add target
-        run: rustup update
 
       - name: Cache Cargo dependencies
         uses: actions/cache@v3
@@ -47,12 +44,27 @@ jobs:
       - name: Package
         run: |
           mkdir bin
-          cp target/release/mine bin/
-          os_name=$(echo ${{ matrix.os }} | sed 's/macos-//;s/10.15/catalina/;s/11/big_sur/;s/12/monterey/')
-          arch=$(echo "x86_64-apple-darwin" | cut -d- -f1)
-          binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.bottle.tar.gz
-          echo "BINARY_NAME=$binary_name" >> $GITHUB_ENV
-          tar czf $binary_name -C bin mine
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            cp target/release/mine.exe bin/
+            os_name="windows"
+            arch="x86_64"
+            binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}
+            echo "BINARY_NAME=$binary_name.zip" >> $GITHUB_ENV
+            powershell Compress-Archive -Path bin/mine.exe -DestinationPath $binary_name
+          else
+            cp target/release/mine bin/
+            if [ "${{ runner.os }}" == "Linux" ]; then
+              os_name="linux"
+              arch="x86_64"
+            else
+              os_name=$(echo ${{ matrix.os }} | sed 's/macos-//;s/10.15/catalina/;s/11/big_sur/;s/12/monterey/')
+              arch=$(echo "x86_64-apple-darwin" | cut -d- -f1)
+            fi
+            ext="bottle.tar.gz"
+            binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.${ext}
+            echo "BINARY_NAME=$binary_name" >> $GITHUB_ENV
+            tar czf $binary_name -C bin mine
+          fi
 
       - name: Upload
         uses: actions/upload-artifact@v3
