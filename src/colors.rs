@@ -177,30 +177,38 @@ pub(crate) fn create_new_color_customizations_object() -> Map<String, Value> {
         _ => "#ffffff",
     };
 
-    let new_active_background = serde_json::json!(&new_color_hex);
-    let new_active_foreground = serde_json::json!(&new_text_color_hex);
-    let new_inactive_background = serde_json::json!(format!("{}80", &new_color_hex));
-    let new_inactive_foreground = serde_json::json!(format!("{}80", &new_text_color_hex));
+    let new_active_background = &new_color_hex;
+    let new_active_foreground = &new_text_color_hex;
+    let new_inactive_background = format!("{}80", &new_color_hex);
+    let new_inactive_foreground = format!("{}80", &new_text_color_hex);
 
     let mut new_colors = Map::new();
-    new_colors.insert(
-        "titleBar.activeBackground".to_string(),
-        serde_json::json!(&new_active_background),
+    insert_color(
+        &mut new_colors,
+        "titleBar.activeBackground",
+        new_active_background,
     );
-    new_colors.insert(
-        "titleBar.activeForeground".to_string(),
-        serde_json::json!(&new_active_foreground),
+    insert_color(
+        &mut new_colors,
+        "titleBar.activeForeground",
+        new_active_foreground,
     );
-    new_colors.insert(
-        "titleBar.inactiveBackground".to_string(),
-        serde_json::json!(&new_inactive_background),
+    insert_color(
+        &mut new_colors,
+        "titleBar.inactiveBackground",
+        &new_inactive_background,
     );
-    new_colors.insert(
-        "titleBar.inactiveForeground".to_string(),
-        serde_json::json!(&new_inactive_foreground),
+    insert_color(
+        &mut new_colors,
+        "titleBar.inactiveForeground",
+        &new_inactive_foreground,
     );
 
     println!("{}", new_color.0);
 
     new_colors
+}
+
+fn insert_color(map: &mut Map<String, Value>, key: &str, value: &str) {
+    map.insert(key.to_string(), Value::String(value.to_string()));
 }
