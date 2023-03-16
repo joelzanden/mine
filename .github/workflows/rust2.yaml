@@ -74,7 +74,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           table="| Filename | SHA256 Checksum |\n|----------|-----------------|"
-          for file in artifacts/*.tar.gz; do
+          for file in artifacts/*.tar.gz/*.tar.gz; do
             checksum=$(sha256sum "$file" | awk '{print $1}')
             table+="\n| $(basename "$file") | $checksum |"
           done
@@ -91,7 +91,7 @@ jobs:
             | jq -r '.upload_url')
           upload_url="${upload_url%\{?name,label\}}"
 
-          for file in artifacts/*.tar.gz; do
+          for file in artifacts/*.tar.gz/*.tar.gz; do
             curl -s -H "Authorization: token $GITHUB_TOKEN" \
               -H "Content-Type: application/octet-stream" \
               --data-binary "@$file" \
