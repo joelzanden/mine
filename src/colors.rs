@@ -1,3 +1,5 @@
+use serde_json::{Map, Value};
+
 pub fn get_random_color() -> (&'static str, [u8; 3]) {
     let number_of_elements_in_array = COLORS_DATA.len();
     let random_index = rand::random::<usize>() % number_of_elements_in_array;
@@ -154,3 +156,51 @@ pub static COLORS_DATA: [(&str, [u8; 3]); 148] = [
     ("Yellow", [255, 255, 0]),
     ("yellowgreen", [154, 205, 50]),
 ];
+
+pub(crate) fn rgb_to_hex(rgb: [u8; 3]) -> String {
+    format!("#{:02x}{:02x}{:02x}", rgb[0], rgb[1], rgb[2])
+}
+
+pub(crate) fn calculate_relative_luminance(rgb: [u8; 3]) -> f32 {
+    let r = f32::from(rgb[0]) / 255.0;
+    let g = f32::from(rgb[1]) / 255.0;
+    let b = f32::from(rgb[2]) / 255.0;
+
+    0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
+pub(crate) fn create_new_color_customizations_object() -> Map<String, Value> {
+    let new_color = get_random_color();
+    let new_color_hex = rgb_to_hex(new_color.1);
+    let new_text_color_hex = match calculate_relative_luminance(new_color.1) {
+        luminance if luminance > 0.5 => "#000000",
+        _ => "#ffffff",
+    };
+
+    let new_active_background = serde_json::json!(&new_color_hex);
+    let new_active_foreground = serde_json::json!(&new_text_color_hex);
+    let new_inactive_background = serde_json::json!(format!("{}80", &new_color_hex));
+    let new_inactive_foreground = serde_json::json!(format!("{}80", &new_text_color_hex));
+
+    let mut new_colors = Map::new();
+    new_colors.insert(
+        "titleBar.activeBackground".to_string(),
+        serde_json::json!(&new_active_background),
+    );
+    new_colors.insert(
+        "titleBar.activeForeground".to_string(),
+        serde_json::json!(&new_active_foreground),
+    );
+    new_colors.insert(
+        "titleBar.inactiveBackground".to_string(),
+        serde_json::json!(&new_inactive_background),
+    );
+    new_colors.insert(
+        "titleBar.inactiveForeground".to_string(),
+        serde_json::json!(&new_inactive_foreground),
+    );
+
+    println!("{}", new_color.0);
+
+    new_colors
+}
