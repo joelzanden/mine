@@ -1,17 +1,18 @@
 # Mine
 
-`mine` is a lightweight CLI app that adjusts window colors for easy project distinction, randomly selecting a color from the CSS named colors. The app aims to improve your workspace organization and enhance your coding experience by visually differentiating projects with unique colors.
+`mine` is a nifty CLI app that spices up your workspace by adjusting window colors for easy project distinction. It randomly selects a color from the CSS named colors, making it a breeze to visually differentiate projects.
 
 ## Why?
-I have so many repositories on my local machines and often need to switch back and forth between them.
-It used to make my brain melt into a dark puddle of letters and morphemes. [This tip](https://twitter.com/wesbos/status/998993638578376709?s=20) from Wes Bos of [the Syntax podcast](https://syntax.fm) turned out to be exactly what I needed to spare me a surprisingly large portion of the mental overhead needed to switch repos. Thank you! 
+Juggling multiple repositories on my local machines was a headache.
+Thankfully, [this tip](https://twitter.com/wesbos/status/998993638578376709?s=20) from Wes Bos of [the Syntax podcast](https://syntax.fm) saved me from a lot of mental overhead when switching repos! Now, this app takes care of the tedious task of manually creating VS Code settings for each repo I clone locally.
+Thank you!
 
 ## Features
 
-- Automatically locates project root and updates the settings file
-- Randomly selects a color from the CSS named colors
-- Enhances visual distinction between projects
-- Currently supports Visual Studio Code, with more editors planned for future updates
+- Finds project root and updates settings file automatically
+- Picks a random color from CSS named colors
+- Boosts visual distinction between projects
+- Supports Visual Studio Code for now, with more editors coming soon
 
 ## Installation
 
