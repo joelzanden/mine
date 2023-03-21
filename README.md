@@ -13,6 +13,24 @@ Thank you!
 - Enhances visual project distinction
 - Supports Visual Studio Code, with more editors soon
 
+## Screenshots
+
+<figure>
+  <img src="https://github.com/joelzanden/mine/raw/main/screenshots/rust.png" alt="Indian Red">
+  <figcaption>Indian Red (Theme: [Cobalt2](https://marketplace.visualstudio.com/items?itemName=wesbos.theme-cobalt2))</figcaption>
+</figure>
+
+<figure>
+  <img src="https://github.com/joelzanden/mine/raw/main/screenshots/sveltekit.png" alt="Gold">
+  <figcaption>Gold (Theme: Solarized Light)</figcaption>
+</figure>
+
+<figure>
+  <img src="https://github.com/joelzanden/mine/raw/main/screenshots/node.png" alt="Deep Pink">
+  <figcaption>Deep Pink (Theme: Material [Theme Darker](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme))</figcaption>
+</figure>
+
+
 ## Installation
 
 ### Homebrew
