@@ -16,20 +16,18 @@ Thank you!
 
 ## Screenshots
 
-### Indian red
+### Indian Red with [Cobalt2](https://marketplace.visualstudio.com/items?itemName=wesbos.theme-cobalt2) theme
 
 ![Indian Red](screenshots/rust.png)
-Theme: [Cobalt2](https://marketplace.visualstudio.com/items?itemName=wesbos.theme-cobalt2)
 
-### Gold
+### Gold with Solarized Light theme
 
 ![Gold](screenshots/sveltekit.png)
 Theme: Solarized Light
 
-### Deep Pink
+### Deep Pink with [Material Theme Darker](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme) theme
 
 ![Deep Pink](screenshots/node.png)
-Theme: [Material Theme Darker](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme)
 
 ## Installation
 
