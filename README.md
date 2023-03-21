@@ -16,17 +16,20 @@ Thank you!
 
 ## Screenshots
 
-![Indian Red](https://github.com/joelzanden/mine/raw/main/screenshots/rust.png)
+### Indian red
 
-> _Indian Red (Theme: [Cobalt2](https://marketplace.visualstudio.com/items?itemName=wesbos.theme-cobalt2))_
+![Indian Red](screenshots/rust.png)
+Theme: [Cobalt2](https://marketplace.visualstudio.com/items?itemName=wesbos.theme-cobalt2)
 
-![Gold](https://github.com/joelzanden/mine/raw/main/screenshots/sveltekit.png)
+### Gold
 
-> _Gold (Theme: Solarized Light)_
+![Gold](screenshots/sveltekit.png)
+Theme: Solarized Light
 
-![Deep Pink](https://github.com/joelzanden/mine/raw/main/screenshots/node.png)
+### Deep Pink
 
-> _Deep Pink (Theme: Material [Theme Darker](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme))_
+![Deep Pink](screenshots/node.png)
+Theme: [Material Theme Darker](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme)
 
 ## Installation
 
