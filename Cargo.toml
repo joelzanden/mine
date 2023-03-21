@@ -1,6 +1,6 @@
 [package]
 name = "mine"
-version = "0.1.17"
+version = "0.1.18"
 authors = ["Joel Zandén <joel@zanden.xyz>"]
 description = "CLI for color-coding project windows, enhancing workspace organization"
 edition = "2021"
@@ -11,8 +11,8 @@ lto = true
 codegen-units = 1
 
 [dependencies]
-dirs = { version = "4.0.0", default-features = false }
+dirs = { version = "5.0.0", default-features = false }
 serde_json = { version = "1.0.94", default-features = false }
 rand = "0.8.5"
 json-patch = { version = "0.3.0", default-features = false }
-serde = { version = "1.0.156", default-features = false }
+serde = { version = "1.0.158", default-features = false }
