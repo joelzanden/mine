@@ -3,6 +3,7 @@
 `mine` is a nifty CLI app that adds a splash of color to your workspace. By choosing a hue from the vast array of CSS named colors, mine allows you to tell your projects apart with just a glance.
 
 ## Why?
+
 Juggling multiple repositories locally was challenging until [this tip](https://twitter.com/wesbos/status/998993638578376709?s=20) from Wes Bos of [the Syntax podcast](https://syntax.fm) came to the rescue. Now, `mine` handles the once-tedious task of creating VS Code settings for each cloned repo.
 Thank you!
 
@@ -15,21 +16,17 @@ Thank you!
 
 ## Screenshots
 
-<figure>
-  <img src="https://github.com/joelzanden/mine/raw/main/screenshots/rust.png" alt="Indian Red">
-  <figcaption>Indian Red (Theme: [Cobalt2](https://marketplace.visualstudio.com/items?itemName=wesbos.theme-cobalt2))</figcaption>
-</figure>
+![Indian Red](https://github.com/joelzanden/mine/raw/main/screenshots/rust.png)
 
-<figure>
-  <img src="https://github.com/joelzanden/mine/raw/main/screenshots/sveltekit.png" alt="Gold">
-  <figcaption>Gold (Theme: Solarized Light)</figcaption>
-</figure>
+> _Indian Red (Theme: [Cobalt2](https://marketplace.visualstudio.com/items?itemName=wesbos.theme-cobalt2))_
 
-<figure>
-  <img src="https://github.com/joelzanden/mine/raw/main/screenshots/node.png" alt="Deep Pink">
-  <figcaption>Deep Pink (Theme: Material [Theme Darker](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme))</figcaption>
-</figure>
+![Gold](https://github.com/joelzanden/mine/raw/main/screenshots/sveltekit.png)
 
+> _Gold (Theme: Solarized Light)_
+
+![Deep Pink](https://github.com/joelzanden/mine/raw/main/screenshots/node.png)
+
+> _Deep Pink (Theme: Material [Theme Darker](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme))_
 
 ## Installation
 
