@@ -23,7 +23,6 @@ Thank you!
 ### Gold with Solarized Light theme
 
 ![Gold](screenshots/sveltekit.png)
-Theme: Solarized Light
 
 ### Deep Pink with [Material Theme Darker](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme) theme
 
