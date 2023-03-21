@@ -109,4 +109,4 @@ This utility detects and locates project hierarchy roots by searching for specif
 
 ## Contributing
 
-If you're interested in contributing to Mine, please feel free to open an issue or submit a pull request on the GitHub repository.
+If you're interested in contributing, please feel free to open an issue or submit a pull request.
