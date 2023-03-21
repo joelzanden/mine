@@ -1,31 +1,35 @@
 # Mine
 
-`mine` is a lightweight CLI app that adjusts window colors for easy project distinction, randomly selecting a color from the CSS named colors. The app aims to improve your workspace organization and enhance your coding experience by visually differentiating projects with unique colors.
+`mine` is a nifty CLI app that adds a splash of color to your workspace. By choosing a hue from the vast array of CSS named colors, mine allows you to tell your projects apart with just a glance.
+
+## Why?
+Juggling multiple repositories locally was challenging until [this tip](https://twitter.com/wesbos/status/998993638578376709?s=20) from Wes Bos of [the Syntax podcast](https://syntax.fm) came to the rescue. Now, `mine` handles the once-tedious task of creating VS Code settings for each cloned repo.
+Thank you!
 
 ## Features
 
-- Automatically locates project root and updates the settings file
-- Randomly selects a color from the CSS named colors
-- Enhances visual distinction between projects
-- Currently supports Visual Studio Code, with more editors planned for future updates
+- Locates project root and updates settings automatically
+- Selects random hues from CSS named colors
+- Enhances visual project distinction
+- Supports Visual Studio Code, with more editors soon
 
 ## Installation
 
 ### Homebrew
 
-If you're using Homebrew, you can install Mine using the following command:
+Preferred installation for MacOS and Linux via [Homebrew](https://brew.sh/):
 
 ```bash
 brew install joelzanden/tap/mine
 ```
 
-### Precompiled Binaries
+### Precompiled binaries
 
-You can download precompiled binaries for your operating system from the [releases page](https://github.com/joelzanden/mine/releases).
+You can download precompiled binaries for Windows, Linux and MacOS from the [releases page](https://github.com/joelzanden/mine/releases).
 
 ### Build from Source
 
-If you have Rust and Cargo installed, you can build Mine from source using the following command:
+With Rust and Cargo installed, build `mine` from source:
 
 ```bash
 cargo build --release
@@ -33,17 +37,17 @@ cargo build --release
 
 ## Usage
 
-After installing Mine and made sure it's in your system's PATH, you can use it by running the following command in your project directory:
+Install `mine`, add to your system's PATH, then run in your project directory:
 
 ```bash
 mine
 ```
 
-This command will locate the project root, update the settings file with a randomly selected CSS named color, and apply the color to the top portion of the editor window.
+This command finds the project root, updates the settings file with a random CSS named color, and applies it to the editor's top portion.
 
 ## Supported Project Files and Folders
 
-This utility can automatically detect and locate the root of your programming project hierarchy by searching for specific project files and folders. The table below lists the files and folders that are currently supported, categorized by the programming language or framework.
+This utility detects and locates project hierarchy roots by searching for specific project files and folders. The table below outlines the currently supported files and folders, organized by programming language or framework.
 
 | Language / Framework |                                                                         File(s)                                                                         |
 | :------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------: |
