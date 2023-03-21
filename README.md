@@ -58,7 +58,7 @@ Install `mine`, add to your system's PATH, then run in your project directory:
 mine
 ```
 
-This command finds the project root, updates the settings file with a random CSS named color, and applies it to the editor's top portion.
+This command finds the project root, updates the settings file with a random CSS named color, and applies it to the editor's title bar.
 
 ## Supported Project Files and Folders
 
