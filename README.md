@@ -62,7 +62,7 @@ This command finds the project root, updates the settings file with a random CSS
 
 ## Supported Project Files and Folders
 
-This utility detects and locates project hierarchy roots by searching for specific project files and folders.
+`mine` detects and locates project hierarchy roots by searching for specific project files and folders.
 
 <details>
 <summary>Expand to see a list of the currently supported files and folders</summary>
