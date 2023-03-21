@@ -18,15 +18,15 @@ Thank you!
 
 ### Indian Red with [Cobalt2](https://marketplace.visualstudio.com/items?itemName=wesbos.theme-cobalt2) theme
 
-![Indian Red](screenshots/rust.png)
+![Screenshot of a VS Code project window with a indian red colored title bar](screenshots/rust.png)
 
 ### Gold with Solarized Light theme
 
-![Gold](screenshots/sveltekit.png)
+![Screenshot of a VS Code project window with a gold colored title bar](screenshots/sveltekit.png)
 
 ### Deep Pink with [Material Theme Darker](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme) theme
 
-![Deep Pink](screenshots/node.png)
+![Screenshot of a VS Code project window with a eep pink colored title bar](screenshots/node.png)
 
 ## Installation
 
@@ -60,47 +60,50 @@ mine
 
 This command finds the project root, updates the settings file with a random CSS named color, and applies it to the editor's top portion.
 
-## Supported Project Files and Folders
+<details>
+<summary>Supported Project Files and Folders</summary>
 
 This utility detects and locates project hierarchy roots by searching for specific project files and folders. The table below outlines the currently supported files and folders, organized by programming language or framework.
 
-| Language / Framework |                                                                         File(s)                                                                         |
-| :------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------: |
-|       General        | .dockerignore, .editorconfig, .git, .github, .gitignore, .gitlab-ci.yml, .travis.yml, Dockerfile, Jenkinsfile, LICENSE, README.md, Vagrantfile, .vscode |
-|       Angular        |                                                                      angular.json                                                                       |
-|       ASP.NET        |                                                                      project.json                                                                       |
-|          C#          |                                                          .csproj, .fsproj, .sln, project.json                                                           |
-|         C++          |                                                                CMakeLists.txt, Makefile                                                                 |
-|       Clojure        |                                                                       project.clj                                                                       |
-|       Crystal        |                                                                        shard.yml                                                                        |
-|         Dart         |                                                                      pubspec.yaml                                                                       |
-|        Elixir        |                                                                         mix.exs                                                                         |
-|         Elm          |                                                                        elm.json                                                                         |
-|        Ember         |                                                                   ember-cli-build.js                                                                    |
-|        Erlang        |                                                                      rebar.config                                                                       |
-|          F#          |                                                                   paket.dependencies                                                                    |
-|          Go          |                                                                         go.mod                                                                          |
-|        Groovy        |                                                                      build.gradle                                                                       |
-|       Haskell        |                                                                       stack.yaml                                                                        |
-|         Java         |                                                                  build.gradle, pom.xml                                                                  |
-|        Julia         |                                                                      Project.toml                                                                       |
-|         Lua          |                                                                           lua                                                                           |
-|        Meteor        |                                                                         meteor                                                                          |
-|         Nim          |                                                                         nim.cfg                                                                         |
-|         Node         |                                                           lerna.json, package.json, yarn.lock                                                           |
-|        OCaml         |                                                                          dune                                                                           |
-|         Perl         |                                                                        cpanfile                                                                         |
-|         PHP          |                                                                      composer.json                                                                      |
-|      PowerShell      |                                                                      psakefile.ps1                                                                      |
-|        Python        |                                                   Pipfile, pyproject.toml, requirements.txt, setup.py                                                   |
-|          R           |                                                                       DESCRIPTION                                                                       |
-|         Ruby         |                                                               .gemspec, Gemfile, Rakefile                                                               |
-|         Rust         |                                                                       Cargo.toml                                                                        |
-|        Scala         |                                                                        build.sbt                                                                        |
-|        Svelte        |                                                                    svelte.config.js                                                                     |
-|        Swift         |                                                                      Package.swift                                                                      |
-|      TypeScript      |                                                                      tsconfig.json                                                                      |
-|         Vue          |                                                                      vue.config.js                                                                      |
+| Language / Framework | File(s)                                                                                                                                                 |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| General              | .dockerignore, .editorconfig, .git, .github, .gitignore, .gitlab-ci.yml, .travis.yml, Dockerfile, Jenkinsfile, LICENSE, README.md, Vagrantfile, .vscode |
+| Angular              | angular.json                                                                                                                                            |
+| ASP.NET              | project.json                                                                                                                                            |
+| C#                   | .csproj, .fsproj, .sln, project.json                                                                                                                    |
+| C++                  | CMakeLists.txt, Makefile                                                                                                                                |
+| Clojure              | project.clj                                                                                                                                             |
+| Crystal              | shard.yml                                                                                                                                               |
+| Dart                 | pubspec.yaml                                                                                                                                            |
+| Elixir               | mix.exs                                                                                                                                                 |
+| Elm                  | elm.json                                                                                                                                                |
+| Ember                | ember-cli-build.js                                                                                                                                      |
+| Erlang               | rebar.config                                                                                                                                            |
+| F#                   | paket.dependencies                                                                                                                                      |
+| Go                   | go.mod                                                                                                                                                  |
+| Groovy               | build.gradle                                                                                                                                            |
+| Haskell              | stack.yaml                                                                                                                                              |
+| Java                 | build.gradle, pom.xml                                                                                                                                   |
+| Julia                | Project.toml                                                                                                                                            |
+| Lua                  | lua                                                                                                                                                     |
+| Meteor               | meteor                                                                                                                                                  |
+| Nim                  | nim.cfg                                                                                                                                                 |
+| Node                 | lerna.json, package.json, yarn.lock                                                                                                                     |
+| OCaml                | dune                                                                                                                                                    |
+| Perl                 | cpanfile                                                                                                                                                |
+| PHP                  | composer.json                                                                                                                                           |
+| PowerShell           | psakefile.ps1                                                                                                                                           |
+| Python               | Pipfile, pyproject.toml, requirements.txt, setup.py                                                                                                     |
+| R                    | DESCRIPTION                                                                                                                                             |
+| Ruby                 | .gemspec, Gemfile, Rakefile                                                                                                                             |
+| Rust                 | Cargo.toml                                                                                                                                              |
+| Scala                | build.sbt                                                                                                                                               |
+| Svelte               | svelte.config.js                                                                                                                                        |
+| Swift                | Package.swift                                                                                                                                           |
+| TypeScript           | tsconfig.json                                                                                                                                           |
+| Vue                  | vue.config.js                                                                                                                                           |
+
+</details>
 
 ## Contributing
 
