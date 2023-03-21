@@ -60,10 +60,12 @@ mine
 
 This command finds the project root, updates the settings file with a random CSS named color, and applies it to the editor's top portion.
 
-<details>
-<summary>Supported Project Files and Folders</summary>
+## Supported Project Files and Folders
 
-This utility detects and locates project hierarchy roots by searching for specific project files and folders. The table below outlines the currently supported files and folders, organized by programming language or framework.
+This utility detects and locates project hierarchy roots by searching for specific project files and folders.
+
+<details>
+<summary>Expand to see a list of the currently supported files and folders</summary>
 
 | Language / Framework | File(s)                                                                                                                                                 |
 | :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
