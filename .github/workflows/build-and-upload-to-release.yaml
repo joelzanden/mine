@@ -41,6 +41,25 @@ jobs:
       - name: Build
         run: cargo build --verbose --release
 
+      - name: Setup Windows SDK
+        if: runner.os == 'Windows'
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Import certificate
+        if: runner.os == 'Windows'
+        env:
+          WINDOWS_SIGN_CERT_BASE64: ${{ secrets.WINDOWS_SIGN_CERT_BASE64 }}
+          WINDOWS_SIGN_PASSWORD: ${{ secrets.WINDOWS_SIGN_PASSWORD }}
+        run: |
+          echo $env:WINDOWS_SIGN_CERT_BASE64 | Out-File -Encoding utf8 cert.p12.base64
+          certutil -decode cert.p12.base64 cert.p12
+          $pfx = Get-PfxData -FilePath .\cert.p12 -Password (ConvertTo-SecureString -String $env:WINDOWS_SIGN_PASSWORD -AsPlainText -Force)
+
+      - name: Sign Windows binary
+        if: runner.os == 'Windows'
+        run: |
+          signtool sign /v /fd SHA256 /a /p $env:WINDOWS_SIGN_PASSWORD /f .\cert.p12 target\release\mine.exe
+
       - name: Package (Windows)
         if: runner.os == 'Windows'
         run: |
