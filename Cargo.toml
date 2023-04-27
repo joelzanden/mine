@@ -12,7 +12,7 @@ codegen-units = 1
 
 [dependencies]
 dirs = { version = "5.0.0", default-features = false }
-serde_json = { version = "1.0.94", default-features = false }
+serde_json = { version = "1.0.96", default-features = false }
 rand = "0.8.5"
-json-patch = { version = "0.3.0", default-features = false }
-serde = { version = "1.0.158", default-features = false }
+json-patch = { version = "1.0.0", default-features = false }
+serde = { version = "1.0.160", default-features = false }
