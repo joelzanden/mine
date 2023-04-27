@@ -70,7 +70,7 @@ checksum = "99227334921fae1a979cf0bfdfcc6b3e5ce376ef57e16fb6fb3ea2ed6095f80c"
 
 [[package]]
 name = "mine"
-version = "0.1.19"
+version = "0.1.20"
 dependencies = [
  "dirs",
  "json-patch",
