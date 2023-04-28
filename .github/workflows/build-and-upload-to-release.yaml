@@ -62,7 +62,7 @@ jobs:
         shell: powershell
         run: |
           $signtoolPath = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x86\signtool"
-          $timestampServerUrl = "https://timestamp.digicert.com"
+          $timestampServerUrl = "http://timestamp.digicert.com"
           $password = "`"${{ secrets.WINDOWS_SIGN_PASSWORD }}`""
           & $signtoolPath sign /fd SHA256 /f .\cert.p12 /p $password /tr $timestampServerUrl /td sha256 target\release\mine.exe
 
