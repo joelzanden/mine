@@ -57,6 +57,7 @@ jobs:
 
       - name: Sign Windows binary
         if: runner.os == 'Windows'
+        shell: powershell
         run: |
           signtool sign /v /fd SHA256 /a /p $env:WINDOWS_SIGN_PASSWORD /f .\cert.p12 target\release\mine.exe
 
