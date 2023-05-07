@@ -20,12 +20,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
+      # - name: Install Rust
+      #   uses: actions-rs/toolchain@v1
+      #   with:
+      #     toolchain: stable
+      #     profile: minimal
+      #     override: true
 
       - name: Cache Cargo dependencies
         uses: actions/cache@v3
@@ -61,12 +61,15 @@ jobs:
       - name: Sign Windows binary
         if: runner.os == 'Windows'
         shell: powershell
+        env:
+          WINDOWS_SIGN_PASSWORD_BASE64: ${{ secrets.WINDOWS_SIGN_PASSWORD_BASE64 }}
         run: |
           $signtoolPath = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x86\signtool"
           $timestampServerUrl = "http://timestamp.digicert.com"
-          $password = "`"${{ secrets.WINDOWS_SIGN_PASSWORD }}`""
-          & $signtoolPath sign /fd SHA256 /f .\cert.p12 /p $password /tr $timestampServerUrl /td sha256 target\release\mine.exe
-
+          $decodedPassword = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($env:WINDOWS_SIGN_PASSWORD_BASE64))
+          $securePassword = ConvertTo-SecureString -String $decodedPassword -AsPlainText -Force
+          $credentials = New-Object System.Management.Automation.PSCredential("dummy", $securePassword)
+          & $signtoolPath sign /fd SHA256 /f .\cert.p12 /p $($credentials.GetNetworkCredential().Password) /tr $timestampServerUrl /td sha256 target\release\mine.exe
 
       # - name: Sign Windows binary
       #   if: runner.os == 'Windows'
