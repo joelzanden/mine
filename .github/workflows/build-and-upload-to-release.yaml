@@ -51,11 +51,12 @@ jobs:
         if: runner.os == 'Windows'
         env:
           WINDOWS_SIGN_CERT_BASE64: ${{ secrets.WINDOWS_SIGN_CERT_BASE64 }}
-          WINDOWS_SIGN_PASSWORD: ${{ secrets.WINDOWS_SIGN_PASSWORD }}
+          WINDOWS_SIGN_PASSWORD_BASE64: ${{ secrets.WINDOWS_SIGN_PASSWORD_BASE64 }}
         run: |
           echo $env:WINDOWS_SIGN_CERT_BASE64 | Out-File -Encoding utf8 cert.p12.base64
           certutil -decode cert.p12.base64 cert.p12
-          $pfx = Get-PfxData -FilePath .\cert.p12 -Password (ConvertTo-SecureString -String $env:WINDOWS_SIGN_PASSWORD -AsPlainText -Force)
+          $decodedPassword = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($env:WINDOWS_SIGN_PASSWORD_BASE64))
+          $pfx = Get-PfxData -FilePath .\cert.p12 -Password (ConvertTo-SecureString -String $decodedPassword -AsPlainText -Force)
 
       - name: Sign Windows binary
         if: runner.os == 'Windows'
