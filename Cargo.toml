@@ -1,6 +1,6 @@
 [package]
 name = "mine"
-version = "0.1.22"
+version = "0.1.23"
 authors = ["Joel Zandén <joel@zanden.xyz>"]
 description = "CLI for color-coding project windows, enhancing workspace organization"
 edition = "2021"
