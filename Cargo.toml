@@ -11,8 +11,8 @@ lto = true
 codegen-units = 1
 
 [dependencies]
-dirs = { version = "5.0.0", default-features = false }
+dirs = { version = "5.0.1", default-features = false }
 serde_json = { version = "1.0.96", default-features = false }
 rand = "0.8.5"
 json-patch = { version = "1.0.0", default-features = false }
-serde = { version = "1.0.160", default-features = false }
+serde = { version = "1.0.162", default-features = false }
