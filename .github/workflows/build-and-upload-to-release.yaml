@@ -13,19 +13,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
-        # os: [macos-10.15, windows-latest, ubuntu-latest]
+        os: [macos-10.15, windows-latest, ubuntu-latest]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      # - name: Install Rust
-      #   uses: actions-rs/toolchain@v1
-      #   with:
-      #     toolchain: stable
-      #     profile: minimal
-      #     override: true
 
       - name: Cache Cargo dependencies
         uses: actions/cache@v3
@@ -42,10 +34,6 @@ jobs:
 
       - name: Build
         run: cargo build --verbose --release
-
-      # - name: Setup Windows SDK
-      #   if: runner.os == 'Windows'
-      #   uses: microsoft/setup-msbuild@v1
 
       - name: Import certificate
         if: runner.os == 'Windows'
@@ -68,12 +56,6 @@ jobs:
           $securePassword = ConvertTo-SecureString -String $env:WINDOWS_SIGN_PASSWORD -AsPlainText -Force
           $credentials = New-Object System.Management.Automation.PSCredential("dummy", $securePassword)
           & $signtoolPath sign /fd SHA256 /f .\cert.p12 /p $($credentials.GetNetworkCredential().Password) /tr $timestampServerUrl /td sha256 target\release\mine.exe
-
-      # - name: Sign Windows binary
-      #   if: runner.os == 'Windows'
-      #   shell: powershell
-      #   run: |
-      #     signtool sign /v /fd SHA256 /a /p $env:WINDOWS_SIGN_PASSWORD /f .\cert.p12 target\release\mine.exe
 
       - name: Package (Windows)
         if: runner.os == 'Windows'
@@ -107,46 +89,46 @@ jobs:
           name: ${{ env.BINARY_NAME }}
           path: ${{ env.BINARY_NAME }}
 
-  # release:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   steps:
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         path: artifacts
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
 
-  #     - name: Calculate checksums, generate table, and attach binaries to the release
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       run: |
-  #         table="| Filename | SHA256 Checksum |\n|----------|-----------------|"
-  #         for file in artifacts/*/*.{tar.gz,zip}; do
-  #           checksum=$(sha256sum "$file" | awk '{print $1}')
-  #           table+="\n| $(basename "$file") | $checksum |"
-  #         done
+      - name: Calculate checksums, generate table, and attach binaries to the release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          table="| Filename | SHA256 Checksum |\n|----------|-----------------|"
+          for file in artifacts/*/*.{tar.gz,zip}; do
+            checksum=$(sha256sum "$file" | awk '{print $1}')
+            table+="\n| $(basename "$file") | $checksum |"
+          done
 
-  #         current_body=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-  #           -H "Accept: application/vnd.github+json" \
-  #           "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}" \
-  #           | jq -r '.body')
+          current_body=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}" \
+            | jq -r '.body')
 
-  #         new_body="${current_body}\n${table}"
-  #         upload_url=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-  #           -H "Accept: application/vnd.github+json" \
-  #           "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}" \
-  #           | jq -r '.upload_url')
-  #         upload_url="${upload_url%\{?name,label\}}"
+          new_body="${current_body}\n${table}"
+          upload_url=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}" \
+            | jq -r '.upload_url')
+          upload_url="${upload_url%\{?name,label\}}"
 
-  #         for file in artifacts/*/*.{tar.gz,zip}; do
-  #           curl -s -H "Authorization: token $GITHUB_TOKEN" \
-  #             -H "Content-Type: application/octet-stream" \
-  #             --data-binary "@$file" \
-  #             "${upload_url}?name=$(basename "$file")&label=$(basename "$file")"
-  #         done
+          for file in artifacts/*/*.{tar.gz,zip}; do
+            curl -s -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Content-Type: application/octet-stream" \
+              --data-binary "@$file" \
+              "${upload_url}?name=$(basename "$file")&label=$(basename "$file")"
+          done
 
-  #         curl -s -X PATCH -H "Authorization: token $GITHUB_TOKEN" \
-  #           -H "Content-Type: application/json" \
-  #           -H "Accept: application/vnd.github+json" \
-  #           -d "{\"body\": \"$new_body\"}" \
-  #           "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}"
+          curl -s -X PATCH -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/vnd.github+json" \
+            -d "{\"body\": \"$new_body\"}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}"
