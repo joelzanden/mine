@@ -72,14 +72,12 @@ jobs:
           mkdir bin
           cp target/release/mine bin/
           if [ "${{ runner.os }}" == "Linux" ]; then
-            os_name="linux"
-            arch="x86_64"
+            os_name="x86_64_linux"
           else
-            os_name=$(echo ${{ matrix.os }} | sed 's/macos-//;s/10.15/catalina/;s/11/big_sur/;s/12/monterey/')
-            arch=$(echo "x86_64-apple-darwin" | cut -d- -f1)
+            os_name="monterey"
           fi
           ext="bottle.tar.gz"
-          binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${arch}.${ext}
+          binary_name=mine-${{ github.event.release.tag_name }}.${os_name}.${ext}
           echo "BINARY_NAME=$binary_name" >> $GITHUB_ENV
           tar czf $binary_name -C bin mine
 
